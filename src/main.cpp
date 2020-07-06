@@ -15,6 +15,9 @@ You can only send the Arduino one protocol (E1.31 or ArtNet) at a time.
   #define ESP_NAME "relay"
 #endif
 
+#if !(defined(CHANNEL))
+  #define CHANNEL 1 // Channel is 1 based
+#endif
 /*  set the desired subnet and universe (first universe is 0)
     sACN starts with universe 1 so subtract 1 from sACN universe
     to get DMX_UNIVERSE.                                           */
@@ -25,15 +28,15 @@ You can only send the Arduino one protocol (E1.31 or ArtNet) at a time.
   #define ARTNET_UNIVERSE 0 //first universe being used
 #endif
 #if !(defined(E131_SUBNET))
-  #define E131_SUBNET 0 //defualt subnet is 0. Should not need to be changed.
+  #define E131_SUBNET 0 //default subnet is 0. Should not need to be changed.
 #endif 
 #define ETHERNET_BUFFER_MAX 640
 #define ARTNET_ARTDMX 0x5000
 #define ARTNET_ARTPOLL 0x2000
 #define ARTNET_PORT 0x1936 //standard port
-#define ARTNET_START_ADDRESS 18 //Byte 18 in the packet contains channel 1 values. 
+#define ARTNET_START_ADDRESS 18 + CHANNEL -1 //Byte 18 in the packet contains channel 1 values. 
 #define E131_PORT 5568 //standard port 
-#define E131_START_ADDRESS 126 //Byte 126 in the packet contains channel 1 values. Offset is set to one prior. 
+#define E131_START_ADDRESS 126 + CHANNEL -1 //Byte 126 in the packet contains channel 1 values. Offset is set to one prior. 
 #define NUM_RELAYS 1 //total number of relays used
 
 #include <Arduino.h>
