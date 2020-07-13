@@ -121,7 +121,7 @@ void setup() {
 
   /* UDP */
   ArtNetUdp.begin(ARTNET_PORT); //Open Artnet Port
-  E131Udp.begin(ARTNET_PORT); //Open E1.31 Port
+  E131Udp.begin(E131_PORT); //Open E1.31 Port
 
   Serial.println(hostname);
   Serial.print(F("  "));
@@ -257,7 +257,8 @@ void loop() {
        tells what kind of message it is                         */
     int opcode = artNetOpCode(packetBuffer);
     if ( opcode == ARTNET_ARTDMX ) {
-      Serial.println("ArtNet Packet Received");
+      Serial.print("ArtNet Packet Received: ");
+      Serial.println(currentcounter);
       artDMXReceived(packetBuffer);
       currentcounter++;  //increase counter by 1 each time through 
       digitalWrite(LED_BUILTIN, HIGH); //turn status LED on
@@ -272,7 +273,8 @@ void loop() {
        that it is a valid sACN packet.*/
       int count = checkACNHeaders(packetBuffer, packetSize);
       if ( count ) {
-        Serial.println("E131 Packet Received");
+        Serial.print("E131 Packet Received: ");
+        Serial.println(currentcounter);
         sacnDMXReceived(packetBuffer, count);
         currentcounter++;  //increase counter by 1 each time through 
         digitalWrite(LED_BUILTIN, HIGH); //turn status LED on
